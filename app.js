@@ -32,6 +32,7 @@ require("./src/routes/findAllPokemons")(app);
 require("./src/routes/deletePokemon")(app);
 require("./src/routes/updatePokemon")(app);
 
+//Ajout de la gestion d'erreur
 app.use(({ res }) => {
   const message = "Impossible de trouver la ressource demandée !";
   res.status(404).json({ message });

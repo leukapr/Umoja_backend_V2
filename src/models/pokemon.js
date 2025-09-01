@@ -25,9 +25,13 @@ module.exports = (sequelize, DataTypes) => {
     types: {
       type: DataTypes.STRING,
       allowNull: false,
+
+      // Getter et Setter pour gérer un tableau de types
+      // Stockage en base sous forme de chaîne de caractères séparée par des virgules
       get() {
         return this.getDataValue('types').split(',')
       },
+      // Setter pour convertir un tableau en chaîne de caractères
       set(types) {
         this.setDataValue('types', types.join())
       } 
