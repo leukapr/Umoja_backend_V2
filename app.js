@@ -22,7 +22,8 @@ sequelize
       "Erreur lors de l'initialisation de la base de données :",
       error
     )
-  );
+);
+
 
 // Routes
 require("./src/routes/createPokemon")(app);
