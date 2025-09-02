@@ -15,7 +15,9 @@ module.exports = (app) => {
             // Le pourcentage avant et après le terme de recherche permet de faire une recherche "contient"
           },
           
-        limit : 5 // On limite le nombre de résultats à 10
+          order : ['name'],// On trie les résultats par ordre alphabétique croissant
+          limit: 5 // On limite le nombre de résultats à 10
+           
         }
       })
         // On gère la promesse retournée par findAll
@@ -24,8 +26,8 @@ module.exports = (app) => {
           res.json({ message, data: rows });
         })
     }
-    // Si pas de paramètre "name", on récupère tous les pokémons
-    Pokemon.findAll().then((pokemons) => {
+    // Si pas de paramètre "name", on renvoie tous les pokémons
+    Pokemon.findAll({order : ['name']}).then((pokemons) => {
       const message = "La liste des pokémons a bien été récupérée.";
       res.json({ message, data: pokemons });
     })
