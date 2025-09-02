@@ -5,13 +5,15 @@ module.exports = (app) => {
   app.get("/api/pokemons", (req, res) => {
     // Ici on va chercher si un paramètre de requête "name" est présent
     if (req.query.name) {
+      const name = req.query.name;
+      const limit = parseInt(req.query.limit) || 5; // On définit une limite par défaut de 5 résultats
+      
       if(name.length < 2){
         const message = "Le terme de recherche doit contenir au moins 2 caractères.";
         return res.status(400).json({ message });
       }
       
-      const name = req.query.name;
-      const limit = parseInt(req.query.limit) || 5; // On définit une limite par défaut de 5 résultats
+      
       // On utilise la méthode findAll de Sequelize pour récupérer les pokémons
       return Pokemon.findAndCountAll({
         where: {// On ajoute une condition sur le nom
