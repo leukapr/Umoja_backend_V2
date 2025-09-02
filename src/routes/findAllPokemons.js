@@ -20,8 +20,8 @@ module.exports = (app) => {
       })
         // On gère la promesse retournée par findAll
         .then(({count, rows}) => {
-          const message = `Il y a ${count} pokémons correspondant au terme de recherche ${rows}.`;
-          res.json({ message, data: pokemons });
+          const message = `Il y a ${count} pokémons correspondant au terme de recherche ${name}.`;
+          res.json({ message, data: rows });
         })
     }
     // Si pas de paramètre "name", on récupère tous les pokémons
