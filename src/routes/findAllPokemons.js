@@ -9,9 +9,11 @@ module.exports = (app) => {
       const name = req.query.name;
       // On utilise la méthode findAll de Sequelize pour récupérer les pokémons
       return Pokemon.findAll({
-        where: {
-          name: {
-            [Op.eq]: name}
+        where: {// On ajoute une condition sur le nom
+          name: { 
+            [Op.like]: `%${name}%`  // Opérateur "like" de SQL pour faire une recherche partielle
+            // Le pourcentage avant et après le terme de recherche permet de faire une recherche "contient"
+          } 
         }
       })
         // On gère la promesse retournée par findAll
