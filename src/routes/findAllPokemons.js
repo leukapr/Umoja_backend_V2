@@ -6,7 +6,7 @@ module.exports = (app) => {
       const name = req.query.name;
       return Pokemon.findAll({ where: { name } })
         .then((pokemons) => {
-          const message = `La liste des pokémons correspondant au nom ${name} a bien été récupérée.`;
+          const message = `Il y a ${pokemons.length} pokémons correspondant au terme de recherche ${name}.`;
           res.json({ message, data: pokemons });
         })
     }
