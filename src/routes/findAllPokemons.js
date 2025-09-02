@@ -5,6 +5,10 @@ module.exports = (app) => {
   app.get("/api/pokemons", (req, res) => {
     // Ici on va chercher si un paramètre de requête "name" est présent
     if (req.query.name) {
+      if(name.length < 2){
+        const message = "Le terme de recherche doit contenir au moins 2 caractères.";
+        return res.status(400).json({ message });
+      }
       
       const name = req.query.name;
       const limit = parseInt(req.query.limit) || 5; // On définit une limite par défaut de 5 résultats
