@@ -7,6 +7,7 @@ module.exports = (app) => {
     if (req.query.name) {
       
       const name = req.query.name;
+      const limit = parseInt(req.query.limit) || 5; // On définit une limite par défaut de 5 résultats
       // On utilise la méthode findAll de Sequelize pour récupérer les pokémons
       return Pokemon.findAndCountAll({
         where: {// On ajoute une condition sur le nom
@@ -16,7 +17,7 @@ module.exports = (app) => {
           },
           
           order : ['name'],// On trie les résultats par ordre alphabétique croissant
-          limit: 5 // On limite le nombre de résultats à 10
+          limit: limit // On limite le nombre de résultats à 10
            
         }
       })
