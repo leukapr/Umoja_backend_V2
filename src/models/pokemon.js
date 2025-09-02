@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isEmpty: { msg: "Le nom ne peut pas être vide." },
+        notEmpty: { msg: "Le nom ne peut pas être vide." },
         notNull: { msg: "Le nom est une propriété requise." }
       }
     },
@@ -19,7 +19,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         isInt: { msg: "Utilisez uniquement des nombres entiers pour les points de vie." },
-        notNull: { msg: "Les points de vie sont une propriété requise." }
+        notNull: { msg: "Les points de vie sont une propriété requise." },
+        max: {
+          args: [999],
+          msg: "Les points de vie ne peuvent pas dépasser 999."
+        }
       }
     },
     cp: {
@@ -27,7 +31,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         isInt: { msg: "Utilisez uniquement des nombres entiers pour les points de dégât." },
-        notNull: { msg: "Les points de dégât sont une propriété requise." }
+        notNull: { msg: "Les points de dégât sont une propriété requise." },
+        max: {
+          args: [99],
+          msg: "Les points de dégât ne peuvent pas dépasser 99."
+        }
       } 
     },
     picture: {
@@ -50,8 +58,18 @@ module.exports = (sequelize, DataTypes) => {
       // Setter pour convertir un tableau en chaîne de caractères
       set(types) {
         this.setDataValue('types', types.join())
-      } 
-    }
+      },
+      validate: {
+        isTypesValid(value) {
+          if (!value) { 
+            throw new Error("Un pokémon doit au moins avoir un type.")
+          }
+          if (value.split(',').length > 3) {
+            throw new Error("Un pokémon ne peut pas avoir plus de trois types.")
+          } 
+        }
+      }
+    },
   }, {
     timestamps: true,
     createdAt: 'created',
