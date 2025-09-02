@@ -13,7 +13,9 @@ module.exports = (app) => {
           name: { 
             [Op.like]: `%${name}%`  // Opérateur "like" de SQL pour faire une recherche partielle
             // Le pourcentage avant et après le terme de recherche permet de faire une recherche "contient"
-          } 
+          },
+          
+        limit : 5 // On limite le nombre de résultats à 10
         }
       })
         // On gère la promesse retournée par findAll
