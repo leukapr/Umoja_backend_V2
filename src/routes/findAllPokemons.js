@@ -8,7 +8,7 @@ module.exports = (app) => {
       
       const name = req.query.name;
       // On utilise la méthode findAll de Sequelize pour récupérer les pokémons
-      return Pokemon.findAll({
+      return Pokemon.findAndCountAll({
         where: {// On ajoute une condition sur le nom
           name: { 
             [Op.like]: `%${name}%`  // Opérateur "like" de SQL pour faire une recherche partielle
@@ -19,8 +19,8 @@ module.exports = (app) => {
         }
       })
         // On gère la promesse retournée par findAll
-        .then((pokemons) => {
-          const message = `Il y a ${pokemons.length} pokémons correspondant au terme de recherche ${name}.`;
+        .then(({count, rows}) => {
+          const message = `Il y a ${count} pokémons correspondant au terme de recherche ${rows}.`;
           res.json({ message, data: pokemons });
         })
     }
