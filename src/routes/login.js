@@ -1,6 +1,8 @@
 /* Authentification : Créer un modèle User avec Sequelize */
 const { User } = require("../db/sequelize");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const privateKey = require("../auth/private_key");
 
 module.exports = (app) => {
   app.post("/api/login", (req, res) => {
@@ -17,10 +19,16 @@ module.exports = (app) => {
             const message = "Le mot de passe est incorrect";
             return res.status(401).json({ message });
           }
+          // Générer un token JWT
+          const token = jwt.sign({ userId: user.id }, privateKey, {
+            expiresIn: "24h",
+          });
           const message = `L'utilisateur a été connecté avec succès`;
           res.json({ message, data: user });
-        }).catch((error) => {
-          const message = "Une erreur est survenue lors de la vérification du mot de passe";
+        })
+        .catch((error) => {
+          const message =
+            "Une erreur est survenue lors de la vérification du mot de passe";
           res.status(500).json({ message, data: error });
         });
     });
