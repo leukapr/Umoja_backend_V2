@@ -1,5 +1,6 @@
-// Types personnalisés pour votre application
+import { Optional } from 'sequelize';
 
+// Types pour les réponses API
 export interface ApiResponse<T = any> {
   success: boolean;
   message: string;
@@ -7,22 +8,64 @@ export interface ApiResponse<T = any> {
   error?: string;
 }
 
-export interface User {
-  id: number;
-  username: string;
-  email: string;
-  createdAt: Date;
-  updatedAt: Date;
+// Énumérations
+export enum TypeContrat {
+  CDI = 'CDI',
+  CDD = 'CDD',
+  STAGE = 'Stage',
+  ALTERNANCE = 'Alternance',
+  FREELANCE = 'Freelance',
 }
 
-export interface JobOffer {
-  id: number;
+// Interface User (structure de données)
+export interface UserAttributes {
+  id?: number;
+  username: string;
+  email: string;
+  password: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+// Interface JobOffer (structure de données)
+export interface JobOfferAttributes {
+  id?: number;
   intitule: string;
-  description: string;
+  description?: string;
   lieuTravail: string;
   entreprise: string;
-  typeContrat?: 'CDI' | 'CDD' | 'Stage' | 'Alternance' | 'Freelance';
+  typeContrat?: TypeContrat;
   salaire?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  externalId?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
+
+export interface JobOfferCreationAttributes
+  extends Optional<
+    JobOfferAttributes,
+    | 'id'
+    | 'description'
+    | 'typeContrat'
+    | 'salaire'
+    | 'externalId'
+    | 'createdAt'
+    | 'updatedAt'
+  > {}
+
+export interface BlogAttributes {
+  id: number;
+  title: string;
+  slug: string;
+  content: string;
+  author: string;
+  published: boolean;
+  publishedAt?: Date | null;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export type BlogCreationAttributes = Optional<
+  BlogAttributes,
+  'id' | 'published' | 'publishedAt' | 'createdAt' | 'updatedAt'
+>;

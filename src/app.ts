@@ -1,5 +1,9 @@
 import dotenv from 'dotenv';
 import express, { Application, Request, Response } from 'express';
+import offerRoutes from './routes/offer.js';
+
+import authRoutes from './routes/auth.js';
+import blogRoutes from './routes/blog.js';
 
 // Charger les variables d'environnement
 dotenv.config();
@@ -28,9 +32,15 @@ app.get('/health', (_req: Request, res: Response) => {
   });
 });
 
+// Routes API
+app.use('/api/offres', offerRoutes);
+app.use('/api/blogs', blogRoutes);
+app.use('/api/auth', authRoutes);
+
 // Gestion des routes inexistantes
 app.use((req: Request, res: Response) => {
   res.status(404).json({
+    success: false,
     message: 'Route non trouvée',
     path: req.path,
   });
