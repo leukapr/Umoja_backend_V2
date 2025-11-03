@@ -69,3 +69,23 @@ export type BlogCreationAttributes = Optional<
   BlogAttributes,
   'id' | 'published' | 'publishedAt' | 'createdAt' | 'updatedAt'
 >;
+
+export interface Offer {
+  id: string;
+  title: string;
+  description: string;
+  company: string;
+  location: string;
+  datePosted: string;
+  contractType: string;
+}
+export interface OfferResponse {
+  offres: Offer[];
+}
+interface JobOffer {
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  url: string;
+}

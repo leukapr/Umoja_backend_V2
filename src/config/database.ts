@@ -1,50 +1,46 @@
+/**
+ * src/config/database.ts
+ * Connexion à MariaDB avec Sequelize (structure Umoja conservée)
+ */
 import dotenv from 'dotenv';
 import { Sequelize } from 'sequelize';
 
+// Chargement des variables d’environnement (.env)
 dotenv.config();
 
-// Configuration de la connexion Sequelize
-const sequelize = new Sequelize(
-  process.env.DB_NAME || 'umoja_recrutement',
+// Création de l’instance Sequelize
+export const sequelize = new Sequelize(
+  process.env.DB_NAME || 'umoja',
   process.env.DB_USER || 'root',
-  process.env.DB_PASSWORD || '',
+  process.env.DB_PASS || '',
   {
-    host: process.env.DB_HOST || '127.0.0.1',
-    port: parseInt(process.env.DB_PORT || '3306'),
+    host: process.env.DB_HOST || 'localhost',
+    port: Number(process.env.DB_PORT) || 3306,
     dialect: 'mariadb',
     logging: process.env.NODE_ENV === 'development' ? console.log : false,
+    define: {
+      timestamps: true,
+      underscored: true,
+      freezeTableName: true,
+    },
     pool: {
-      max: 5,
+      max: 10,
       min: 0,
       acquire: 30000,
       idle: 10000,
     },
-    timezone: '+01:00', // Fuseau horaire Europe/Paris
   },
 );
 
-// Fonction pour tester la connexion
-export const testConnection = async (): Promise<void> => {
+/**
+ * Connexion à la base MariaDB
+ */
+export async function connectDatabase(): Promise<void> {
   try {
     await sequelize.authenticate();
-    console.log('✅ Connexion à la base de données réussie');
+    console.log('✅ Database connection established successfully.');
   } catch (error) {
-    console.error('❌ Impossible de se connecter à la base de données:', error);
-    process.exit(1);
+    console.error('❌ Unable to connect to the database:', error);
+    process.exit(1); // Stop le serveur si la connexion échoue
   }
-};
-
-// Fonction pour synchroniser les modèles
-export const syncDatabase = async (force = false): Promise<void> => {
-  try {
-    await sequelize.sync({ force });
-    console.log(
-      `✅ Base de données synchronisée ${force ? '(tables recréées)' : ''}`,
-    );
-  } catch (error) {
-    console.error('❌ Erreur lors de la synchronisation:', error);
-    throw error;
-  }
-};
-
-export default sequelize;
+}
